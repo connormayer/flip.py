@@ -1,5 +1,5 @@
 # flip.py
-flip.py is a command line program that takes one or two GIF images formats them into images that can easily be printed and cut into a [flip book](http://en.wikipedia.org/wiki/Flip_book).
+flip.py is a command line program that takes one or two GIF images and formats them into images that can easily be printed and cut into a [flip book](http://en.wikipedia.org/wiki/Flip_book).
 
 ## Requirements
 flip.py is written in Python 3. You will need the [Pillow](https://pillow.readthedocs.org) image processing library.
