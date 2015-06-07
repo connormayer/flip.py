@@ -17,6 +17,7 @@ BLACK = (0, 0, 0, 255)
 # TODO: pdf output, 1 pdf per gif
 # TODO: config file
 # TODO: gifs of different lengths: loop shorter opiton
+# TODO: specify output directory
 
 class Flipbook(object):
     def __init__(self, config):
@@ -30,21 +31,25 @@ class Flipbook(object):
 
     def create(self):
         gif1 = Image.open(self.gif1)
-        gif2 = Image.open(self.gif2)
-
-        assert gif1.size == gif2.size, \
-               "Both gifs must be the same size (for now)"
-
         gif1_frames = [im.copy() for im in ImageSequence(gif1)]
-        gif2_frames = [im.copy() for im in ImageSequence(gif2)]
 
-        # Truncate to length of shortest gif and loop if requested
-        min_length = min(len(gif1_frames), len(gif2_frames))
+        if self.gif2:
+            gif2 = Image.open(self.gif2)
+            assert gif1.size == gif2.size, \
+                   "Both gifs must be the same size (for now)"
+            gif2_frames = [im.copy() for im in ImageSequence(gif2)]
+
+            # Truncate to length of shortest gif and loop if requested
+            min_length = min(len(gif1_frames), len(gif2_frames))
+            gif2_frames = gif2_frames[:min_length] * self.repeat
+        else:
+            min_length = len(gif1_frames)
+
         gif1_frames = gif1_frames[:min_length] * self.repeat
-        gif2_frames = gif2_frames[:min_length] * self.repeat
-
         self.add_gif(gif1_frames, gif1.size, self.pages1)
-        self.add_gif(gif2_frames, gif2.size, self.pages2, backwards=True)
+
+        if self.gif2:
+            self.add_gif(gif2_frames, gif2.size, self.pages2, backwards=True)
 
     def add_gif(self, gif, size, pages, backwards=False):
         if backwards:

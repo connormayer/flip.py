@@ -14,7 +14,7 @@ if __name__ == "__main__":
         help="The filename of the first GIF to use."
     )
     parser.add_argument(
-        'gif2', metavar='G2', type=str,
+        'gif2', metavar='G2', type=str, nargs='?', default="",
         help="The filename of the second GIF to use."
     )
     parser.add_argument(
@@ -38,6 +38,8 @@ if __name__ == "__main__":
 
     flipbook = Flipbook(args)
     flipbook.create()
-    pages = flipbook.get_all_pages()
-    for i, page in enumerate(pages):
-        page.save("output{}.png".format(i))
+    pages = flipbook.get_grouped_pages()
+    for i, page in enumerate(pages[0]):
+        page.save("output-a-{}.png".format(i))
+    for i, page in enumerate(pages[1]):
+        page.save("output-b-{}.png".format(i))
