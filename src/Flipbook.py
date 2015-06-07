@@ -80,7 +80,7 @@ class Flipbook(object):
             start_frame = page_num * num_rows * num_cols
             end_frame = start_frame + num_rows * num_cols
             page.create(gif[start_frame: end_frame], backwards)
-            pages.append(page.getImage())
+            pages.append(page.get_image())
 
     def get_all_pages(self):
         return self.pages1 + self.pages2
@@ -100,7 +100,7 @@ class FlipbookPage(object):
         self.frame_height = frame_height
 
     def create(self, gif, backwards=False):
-        self.drawGuideLines()
+        self.draw_guide_lines()
 
         row = self.rows - 1 if backwards else 0
         col = 0
@@ -119,7 +119,7 @@ class FlipbookPage(object):
                 row += -1 if backwards else 1
                 col = 0
 
-    def drawGuideLines(self):
+    def draw_guide_lines(self):
         draw = ImageDraw.Draw(self.im)
         for row in range(self.rows + 1):
             y = self.margin_size + row * self.frame_height
@@ -156,7 +156,7 @@ class FlipbookPage(object):
             fill=BLACK, width=5
         )
 
-    def getImage(self):
+    def get_image(self):
         return self.im
 
 
