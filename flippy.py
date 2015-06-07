@@ -21,6 +21,6 @@ if __name__ == "__main__":
 
 	flipbook = Flipbook(args.gif1, args.gif2, args.rows, args.cols)
 	flipbook.create()
-	pages = flipbook.getPages()
+	pages = flipbook.getAllPages()
 	for i, page in enumerate(pages):
 		page.save("output{}.png".format(i))

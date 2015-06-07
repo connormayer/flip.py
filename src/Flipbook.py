@@ -123,13 +123,14 @@ class FlipbookPage(object):
 					   fill=BLACK, width=5)
 
 		# Draw arrow indicating which direction paper should go into printer
-		draw.line((0, self.height / 2, self.margin_size * 0.75, self.height / 2),
+		draw.line((self.width, self.height / 2, 
+				   self.width - self.margin_size * 0.75, self.height / 2),
 				   fill=BLACK, width=5)
-		draw.line((0, self.height / 2, self.margin_size / 2, 
-				   self.height / 2 - self.margin_size / 4),
+		draw.line((self.width, self.height / 2, 
+				   self.width - self.margin_size / 2, self.height / 2 - self.margin_size / 4),
 				  fill=BLACK, width=5)
-		draw.line((0, self.height / 2, self.margin_size / 2, 
-				   self.height / 2 + self.margin_size / 4),
+		draw.line((self.width, self.height / 2, 
+				   self.width - self.margin_size / 2, self.height / 2 + self.margin_size / 4),
 				  fill=BLACK, width=5)
 
 	def getImage(self):
