@@ -12,13 +12,6 @@ MARGIN_SIZE = 0.5
 WHITE = (255, 255, 255, 255)
 BLACK = (0, 0, 0, 255)
 
-# TODO: automatically figure out which page orientation is better
-# TODO: alternating pages or double sided
-# TODO: pdf output, 1 pdf per gif
-# TODO: config file
-# TODO: gifs of different lengths: loop shorter opiton
-# TODO: specify output directory
-
 class Flipbook(object):
     def __init__(self, config):
         self.gif1 = config.gif1

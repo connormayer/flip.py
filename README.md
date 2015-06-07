@@ -43,3 +43,15 @@ flip.py test_images/rainbowgoof.gif --repeat 3
 You can see sample outputs in the `sample_outputs` folder and play with the test images in the `test_images` folder.
 
 Sample GIFs and inspiration provided by [Courtney Garvin](http://courtgarvin.blogspot.ca/).
+
+## TODOs
+Pull requests are welcome!
+
+* automatically figure out which page orientation (landscape vs portrait) can hold more images, and use it.
+* optionally output alternating pages for lucky folks with two-sided printers.
+* output as PDF, one PDF per GIF.
+* read settings from config file instead of command line
+* configurable page size, DPI, margin size, etc.
+* For GIFs of different lengths, allow shorter gif to loop until it matches longer gif.
+* Do something sensible when GIFs of different dimensions are provided (though you'll have to clobber the aspect ratio of one of them)
+* Specify output directory
