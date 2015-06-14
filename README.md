@@ -42,7 +42,7 @@ flip.py test_images/rainbowgoof.gif --repeat 3
 ## Test images and sample outputs
 You can see sample outputs in the `sample_outputs` folder and play with the test images in the `test_images` folder.
 
-Sample GIFs and inspiration provided by [Courtney Garvin](http://courtgarvin.blogspot.ca/).
+Sample GIFs and inspiration provided by [Courtney Garvin](http://courtneygarvin.tumblr.com/).
 
 ## TODOs
 Pull requests are welcome!
