@@ -100,14 +100,17 @@ class FlipbookPage(object):
         self.frame_height = frame_height
 
     def create(self, gif, backwards=False):
-        self.draw_guide_lines()
+        self.draw_guide_lines(backwards)
 
         row = self.rows - 1 if backwards else 0
         col = 0
 
+        row_offset, col_offset = self.getOffsets(backwards)
+
         for im in gif:
-            row_y = self.margin_size + row * self.frame_height
-            corner = (self.margin_size + col * self.frame_width, row_y)
+            row_y = row_offset + self.margin_size + row * self.frame_height
+            corner = (col_offset + self.margin_size + col * self.frame_width,
+                      row_y)
             resized_im = im.resize(
                 (self.frame_width, self.frame_height), 
                 Image.ANTIALIAS
@@ -119,10 +122,23 @@ class FlipbookPage(object):
                 row += -1 if backwards else 1
                 col = 0
 
-    def draw_guide_lines(self):
+    def getOffsets(self, backwards):
+        if backwards:
+            available_height = self.height - 2 * self.margin_size
+            available_width = self.width - 2 * self.margin_size
+            row_offset = available_height % self.frame_height
+            col_offset = available_width % self.frame_width
+        else:
+            row_offset = 0
+            col_offset = 0
+
+        return row_offset, col_offset
+
+    def draw_guide_lines(self, backwards):
+        row_offset, col_offset = self.getOffsets(backwards)
         draw = ImageDraw.Draw(self.im)
         for row in range(self.rows + 1):
-            y = self.margin_size + row * self.frame_height
+            y = row_offset + self.margin_size + row * self.frame_height
             draw.line((0, y, self.margin_size / 2, y), fill=BLACK, width=5)
             draw.line(
                 (self.width, y, self.width - self.margin_size/ 2, y), 
@@ -130,7 +146,7 @@ class FlipbookPage(object):
             )
 
         for col in range(self.cols + 1):
-            x = self.margin_size + col * self.frame_width
+            x = col_offset + self.margin_size + col * self.frame_width
             draw.line((x, 0, x, self.margin_size / 2), fill=BLACK, width=5)
             draw.line(
                 (x, self.height, x, self.height - self.margin_size/ 2), 
