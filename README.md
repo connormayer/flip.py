@@ -51,7 +51,6 @@ Pull requests are welcome!
 * optionally output alternating pages for lucky folks with two-sided printers.
 * output as PDF, one PDF per GIF.
 * read settings from config file instead of command line
-* configurable page size, DPI, margin size, etc.
 * For GIFs of different lengths, allow shorter gif to loop until it matches longer gif.
 * Do something sensible when GIFs of different dimensions are provided (though you'll have to clobber the aspect ratio of one of them)
-* Specify output directory
+
