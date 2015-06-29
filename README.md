@@ -39,6 +39,8 @@ You can also repeat the GIFs multiple times for a longer flip book.
 flip.py test_images/rainbowgoof.gif --repeat 3
 ```
 
+You can configure the page size, margin size and DPI using the `--page_height`, `--page_width`, `--margin` and `--dpi` options. You can specify the directory in which to save the images using the `-d` or `--dir` option.
+
 ## Test images and sample outputs
 You can see sample outputs in the `sample_outputs` folder and play with the test images in the `test_images` folder.
 
