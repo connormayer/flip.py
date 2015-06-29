@@ -1,70 +1,58 @@
 from math import ceil
 from PIL import Image, ImageDraw
 
-# in pixels
-DEFAULT_DPI = 300
-
-# in inches
-PAGE_HEIGHT = 8.5
-PAGE_WIDTH = 11
-MARGIN_SIZE = 0.5
-
 WHITE = (255, 255, 255, 255)
 BLACK = (0, 0, 0, 255)
 
 class Flipbook(object):
     def __init__(self, config):
-        self.gif1 = config.gif1
-        self.gif2 = config.gif2
-        self.rows = config.rows
-        self.cols = config.cols
-        self.repeat = config.repeat
+        self._config = config
         self.pages1 = []
         self.pages2 = []
 
     def create(self):
-        gif1 = Image.open(self.gif1)
+        gif1 = Image.open(self._config.gif1)
         gif1_frames = [im.copy() for im in ImageSequence(gif1)]
 
-        if self.gif2:
-            gif2 = Image.open(self.gif2)
+        if self._config.gif2:
+            gif2 = Image.open(self._config.gif2)
             assert gif1.size == gif2.size, \
                    "Both gifs must be the same size (for now)"
             gif2_frames = [im.copy() for im in ImageSequence(gif2)]
 
             # Truncate to length of shortest gif and loop if requested
             min_length = min(len(gif1_frames), len(gif2_frames))
-            gif2_frames = gif2_frames[:min_length] * self.repeat
+            gif2_frames = gif2_frames[:min_length] * self._config.repeat
         else:
             min_length = len(gif1_frames)
 
-        gif1_frames = gif1_frames[:min_length] * self.repeat
+        gif1_frames = gif1_frames[:min_length] * self._config.repeat
         self.add_gif(gif1_frames, gif1.size, self.pages1)
 
-        if self.gif2:
+        if self._config.gif2:
             self.add_gif(gif2_frames, gif2.size, self.pages2, backwards=True)
 
     def add_gif(self, gif, size, pages, backwards=False):
         if backwards:
             gif.reverse()
 
-        page_height = int(DEFAULT_DPI * PAGE_HEIGHT)
-        page_width = int(DEFAULT_DPI * PAGE_WIDTH)
-        margin_size = int (DEFAULT_DPI * MARGIN_SIZE)
+        page_height = int(self._config.dpi * self._config.page_height)
+        page_width = int(self._config.dpi * self._config.page_width)
+        margin_size = int (self._config.dpi * self._config.margin)
         available_width = page_width - 2 * margin_size
         available_height = page_height - 2 * margin_size
 
         # Figure out page layout based on specified rows/cols
         # Images will be resized, but aspect ratio preserved
-        if self.rows > 0:
-            new_height = available_height // self.rows
+        if self._config.rows > 0:
+            new_height = available_height // self._config.rows
             new_width = int((size[0] / size[1]) * new_height)
-            num_rows = self.rows
+            num_rows = self._config.rows
             num_cols = available_width // new_width
-        elif self.cols > 0:
-            new_width = available_width // self.cols
+        elif self._config.cols > 0:
+            new_width = available_width // self._config.cols
             new_height = int((size[1] / size[0]) * new_width)
-            num_cols = self.cols
+            num_cols = self._config.cols
             num_rows = available_height // new_height
         else:
             # No rows or cols specified, just use original dimensions
@@ -76,7 +64,9 @@ class Flipbook(object):
 
         num_pages = ceil(len(gif) / (num_rows * num_cols))
         for page_num in range(num_pages):
-            page = FlipbookPage(num_rows, num_cols, new_width, new_height)
+            page = FlipbookPage(
+                self._config, num_rows, num_cols, new_width, new_height
+            )
             start_frame = page_num * num_rows * num_cols
             end_frame = start_frame + num_rows * num_cols
             page.create(gif[start_frame: end_frame], backwards)
@@ -89,13 +79,13 @@ class Flipbook(object):
         return (self.pages1, self.pages2)
 
 class FlipbookPage(object):
-    def __init__(self, rows, cols, frame_width, frame_height):
-        self.height = int(DEFAULT_DPI * PAGE_HEIGHT)
-        self.width = int(DEFAULT_DPI * PAGE_WIDTH)
+    def __init__(self, config, rows, cols, frame_width, frame_height):
+        self.height = int(config.dpi * config.page_height)
+        self.width = int(config.dpi * config.page_width)
         self.im = Image.new('RGBA', (self.width, self.height), color=WHITE)
         self.rows = rows
         self.cols = cols
-        self.margin_size = int(MARGIN_SIZE * DEFAULT_DPI)
+        self.margin_size = int(config.margin * config.dpi)
         self.frame_width = frame_width
         self.frame_height = frame_height
 
