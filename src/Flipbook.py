@@ -95,7 +95,7 @@ class FlipbookPage(object):
         row = self.rows - 1 if backwards else 0
         col = 0
 
-        row_offset, col_offset = self.getOffsets(backwards)
+        row_offset, col_offset = self.get_offsets(backwards)
 
         for im in gif:
             row_y = row_offset + self.margin_size + row * self.frame_height
@@ -112,20 +112,18 @@ class FlipbookPage(object):
                 row += -1 if backwards else 1
                 col = 0
 
-    def getOffsets(self, backwards):
+    def get_offsets(self, backwards):
+        col_offset = 0
         if backwards:
             available_height = self.height - 2 * self.margin_size
-            available_width = self.width - 2 * self.margin_size
             row_offset = available_height % self.frame_height
-            col_offset = available_width % self.frame_width
         else:
             row_offset = 0
-            col_offset = 0
 
         return row_offset, col_offset
 
     def draw_guide_lines(self, backwards):
-        row_offset, col_offset = self.getOffsets(backwards)
+        row_offset, col_offset = self.get_offsets(backwards)
         draw = ImageDraw.Draw(self.im)
         for row in range(self.rows + 1):
             y = row_offset + self.margin_size + row * self.frame_height
